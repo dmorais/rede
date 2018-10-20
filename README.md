@@ -27,3 +27,19 @@ optional arguments:
                         publications of an CV
 
 ```
+
+* Name_replacer.py - A script to replace the occurrence a string by another string.
+
+
+
+```
+python Name_repacer.py <file_with_names.txt> <list_of_publications.txt>
+
+# file_with_name.txt - A pipe separated file in the form STRING-TO-BE-REPACED|REPLACEMENT
+# list_of_publications.txt - Either the output of the Scrapper.py of a file with strings that needs to 
+#be replaced according to the pattern in file_with_name.txt
+# Example
+
+python Name_repacer.py examples/file_names.txt examples/extracted_raw_data.txt
+
+```

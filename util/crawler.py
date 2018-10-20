@@ -23,7 +23,13 @@ def get_publication(list_authors):
                     unwanted_ano = div_layout5.find('span', {'data-tipo-ordenacao': 'ano'})
                     unwanted_ano.extract()
 
-                    print(record[0] + "\t" + div_layout5.getText(separator=u' ').strip())
-                    print()
+                    splitter(record[0], div_layout5.getText(separator=u' ').strip())
+    return True
+
+
+def splitter(author, pub):
+    record = pub.strip().split(' . ')
+    title = record[1].split('.')
+    print(author + "|" + record[0] + "|" + title[0] + "| " + "".join(title[1:]))
 
     return True
