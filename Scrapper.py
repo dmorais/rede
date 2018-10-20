@@ -5,7 +5,7 @@ from util.crawler import get_publication
 
 def main():
     parser = argparse.ArgumentParser(
-        description="A tool to Extract information for Lattes platform")
+        description="A tool to Extract information from Lattes platform")
 
     parser.add_argument('-f', '--file', action="store",
                         help='A text file containing a list of Lattes names and/or Lattes id',
