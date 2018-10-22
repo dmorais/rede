@@ -33,7 +33,7 @@ optional arguments:
 
 
 ```
-python Name_repacer.py <file_with_names.txt> <list_of_publications.txt>
+python Name_replacer.py <file_with_names.txt> <list_of_publications.txt>
 
 # file_with_name.txt - A pipe separated file in the form STRING-TO-BE-REPACED|REPLACEMENT
 # list_of_publications.txt - Either the output of the Scrapper.py of a file with strings that needs to 
@@ -41,5 +41,22 @@ python Name_repacer.py <file_with_names.txt> <list_of_publications.txt>
 # Example
 
 python Name_repacer.py examples/file_names.txt examples/extracted_raw_data.txt
+
+```
+
+* Alternative_citation.py - This script creates a file with a list of last names
+cited in different forms. It can be used to create the list needed by the 
+Name_replacer.py.
+
+A example of its output is in examples/alternative_citation.txt
+
+```
+python Alternative_citation.py -h 
+
+Usage:
+python Alternative_citation.py <File created by Scapper.py>
+
+
+
 
 ```
