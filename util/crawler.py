@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+import sys
 
 def get_publication(list_authors):
     '''
@@ -29,6 +30,15 @@ def get_publication(list_authors):
 
 def _splitter(author, pub):
     record = pub.strip().split(' . ')
+
+    if len(record) <= 1:
+        full_name = author.split(' ')
+        with open("-".join(full_name) + "-problems_with_citation.txt", 'a') as f:
+            line = author + '|' + pub
+            f.write(line)
+            f.write("\n\n")
+            return True
+
     title = record[1].split('.')
     _normalize_names(author + "|" + record[0] + "|" + title[0] + "| " + "".join(title[1:]))
 
@@ -66,6 +76,12 @@ def _normalize_names(pub):
         # Convert Author to the format Last_name, Initials.
         names = author.split(',')
 
+        # Sometimes the authorship appears without ',' :(
+        # In this case check the len of names and split by space
+
+        if len(names) == 1:
+            names = author.split(' ')
+
         # Check if last_name is made up by two names
         last_names = names[0].split(' ')
 
@@ -73,6 +89,7 @@ def _normalize_names(pub):
         if len(last_names) > 1:
             names[0] = last_names[-1]
             names[1] += " " + "  ".join(last_names[:-1])
+
 
         # Fix cases where fisrt_names appear without space M.G
         names[1] = names[1].replace('.', '. ')

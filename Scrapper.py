@@ -1,6 +1,7 @@
 import argparse
 from util.util import get_list_autor_id
 from util.crawler import get_publication
+import sys
 
 
 def main():
