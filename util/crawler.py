@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import sys
+import time
 
 def get_publication(list_authors):
     '''
@@ -25,6 +26,8 @@ def get_publication(list_authors):
                     unwanted_ano.extract()
 
                     _splitter(record[0], div_layout5.getText(separator=u' ').strip())
+
+        time.sleep(30)
     return True
 
 
