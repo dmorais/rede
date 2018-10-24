@@ -25,6 +25,12 @@ optional arguments:
                         Lattes id
   -p, --pub             Given a list of Lattes id extract the list of
                         publications of an CV
+                        
+                        
+# To run
+# extract publications
+
+python Scrapper.py -f author-file.tsv -p 
 
 ```
 
