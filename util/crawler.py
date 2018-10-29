@@ -4,6 +4,7 @@ import re
 import sys
 import time
 
+
 def get_publication(list_authors):
     '''
 
@@ -48,7 +49,6 @@ def _splitter(author, pub):
     return True
 
 
-
 def _normalize_names(pub):
     '''
 
@@ -69,7 +69,6 @@ def _normalize_names(pub):
 
     authors = record[1].split(';')
     authors_corrected = list()
-
 
     for author in authors:
 
@@ -104,7 +103,6 @@ def _normalize_names(pub):
 
         list_of_correct_names = list()
 
-
         for first_name in first_names:
 
             if first_name == '':
@@ -134,4 +132,3 @@ def _normalize_names(pub):
     print("|".join(record), end="\n\n")
 
     return True
-
