@@ -93,11 +93,15 @@ def _normalize_names(pub):
             names[0] = last_names[-1]
             names[1] += " " + "  ".join(last_names[:-1])
 
+        first_names = list()
 
         # Fix cases where fisrt_names appear without space M.G
-        names[1] = names[1].replace('.', '. ')
+        # Ignore cases where there is no last name
+        if len(names) > 1 and '.' in names[1]:
+            names[1] = names[1].replace('.', '. ')
 
-        first_names = names[1].strip().split(' ')
+            first_names = names[1].strip().split(' ')
+
         list_of_correct_names = list()
 
 
@@ -115,7 +119,8 @@ def _normalize_names(pub):
                 else:
                     list_of_correct_names.append(first_name)
 
-        names[1] = " ".join(list_of_correct_names)
+        if len(names) > 1:
+            names[1] = " ".join(list_of_correct_names)
 
         names_corrected = list()
         names_corrected.append(" ".join(names))
