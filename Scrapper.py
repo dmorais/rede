@@ -9,15 +9,15 @@ def main():
         description="A tool to Extract information from Lattes platform")
 
     parser.add_argument('-f', '--file', action="store",
-                        help='A text file containing a list of Lattes names and/or Lattes id',
+                        help='A csv file containing a list of Lattes names and/or Lattes id',
                         required=True)
 
     parser.add_argument('-p', '--pub', action='store_true',
-                        help="Given a list of Lattes id extract the list of publications of an CV")
+                        help="Given a list of Lattes id extract the list of publications of an CV",
+                        required=False)
 
     args = parser.parse_args()
-
-    if hasattr(args, 'pub'):
+    if args.pub:
         list_authors = get_list_autor_id(args.file)
         get_publication(list_authors)
 

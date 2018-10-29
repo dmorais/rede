@@ -106,6 +106,9 @@ venv.bak/
 #Misc
 Notes.txt
 *.html
-exemplo.txt
+*exemplo.txt
 test.py
+*-problems_with_citation.txt
+erro.txt
+author.*
 

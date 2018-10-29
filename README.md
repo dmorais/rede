@@ -21,7 +21,7 @@ A tool to Extract information from the Lattes platform
 
 optional arguments:
   -h, --help            show this help message and exit
-  -f FILE, --file FILE  A text file containing a list of Lattes names and/or
+  -f FILE, --file FILE  A csv file containing a list of Lattes names and
                         Lattes id
   -p, --pub             Given a list of Lattes id extract the list of
                         publications of an CV

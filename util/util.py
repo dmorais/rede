@@ -7,4 +7,4 @@ def get_list_autor_id(file_name):
     '''
     with open(file_name, 'r') as file_obj:
 
-        return [(line[0], line[1]) for line in (line.strip().split("\t") for line in file_obj if line.strip())]
+        return [(line[0], line[1]) for line in (line.strip().split(",") for line in file_obj if line.strip())]
