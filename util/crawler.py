@@ -60,7 +60,8 @@ def _normalize_names(pub):
         r' D[AEIOU]\s+',
         r'-',
         r'DOS',
-        r'DAS'
+        r'DAS',
+        r'\d+'
 
     )
 
@@ -87,7 +88,7 @@ def _normalize_names(pub):
         # Check if last_name is made up by two names
         last_names = names[0].split(' ')
 
-        # Convert last_name last_name, name to last_name, name last_name
+        # Convert `last_name last_name, name` to `last_name, name last_name`
         if len(last_names) > 1:
             names[0] = last_names[-1]
             names[1] += " " + "  ".join(last_names[:-1])
