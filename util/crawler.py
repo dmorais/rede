@@ -50,12 +50,12 @@ def _splitter(author, pub):
             return True
 
     title = record[1].split('.')
-    _normalize_names(author + "|" + record[0] + "|" + title[0] + "| " + "".join(title[1:]))
+    normalize_names(author + "|" + record[0] + "|" + title[0] + "| " + "".join(title[1:]))
 
     return True
 
 
-def _normalize_names(pub):
+def normalize_names(pub):
     '''
     Remove unwanted char from names and standardize the citation
     :param pub: string in the format specified by the function splitter
