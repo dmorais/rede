@@ -7,7 +7,7 @@ import time
 
 def get_publication(list_authors):
     '''
-
+    Fetch Publications from url
     :param list_authors: list of tuples (name, id)
     :return: True
     '''
@@ -33,6 +33,12 @@ def get_publication(list_authors):
 
 
 def _splitter(author, pub):
+    '''
+    Split publication record into authors | title | journal
+    :param author: full author's name string
+    :param pub: publication record string
+    :return: True
+    '''
     record = pub.strip().split(' . ')
 
     if len(record) <= 1:
@@ -51,16 +57,21 @@ def _splitter(author, pub):
 
 def _normalize_names(pub):
     '''
-
+    Remove unwanted char from names and standardize the citation
     :param pub: string in the format specified by the function splitter
     :return:
     '''
 
     regexes = (
-        r' D[AEIOU]\s+',
+        r'\s?D[AEIOU]\s+',
         r'-',
-        r'DOS',
-        r'DAS',
+        r'\s+DOS\s+',
+        r'\s+DAS\s+',
+        r'\s+DE$',
+        r'\s+DA$',
+        r'\s+DI$'
+        r'\s+DO$',
+        r'\s+E\s+',
         r'\d+'
 
     )
@@ -69,9 +80,8 @@ def _normalize_names(pub):
     record = pub.strip().split("|")
 
     authors = record[1].split(';')
-    authors_corrected = list()
 
-    for author in authors:
+    for i, author in enumerate(authors):
 
         # Capitalize and Remove preposition and hifens from names
         author = re.sub(regex, " ", author.strip().upper()).strip()
@@ -85,51 +95,68 @@ def _normalize_names(pub):
         if len(names) == 1:
             names = author.split(' ')
 
-        # Check if last_name is made up by two names
-        last_names = names[0].split(' ')
-
-        # Convert `last_name last_name, name` to `last_name, name last_name`
-        if len(last_names) > 1:
-            names[0] = last_names[-1]
-            names[1] += " " + "  ".join(last_names[:-1])
-
-        first_names = list()
-
-        # Fix cases where fisrt_names appear without space M.G
-        # Ignore cases where there is no last name
-        if len(names) > 1 and '.' in names[1]:
-            names[1] = names[1].replace('.', '. ')
-
-            first_names = names[1].strip().split(' ')
-
-        list_of_correct_names = list()
-
-        for first_name in first_names:
-
-            if first_name == '':
-                continue
-            else:
-                if len(first_name) == 1:
-                    first_name += '.'
-                    list_of_correct_names.append(first_name)
-                elif len(first_name) > 2:
-                    first_name = first_name[0] + '.'
-                    list_of_correct_names.append(first_name)
-                else:
-                    list_of_correct_names.append(first_name)
+        names = _isolate_last_name(names[:])
 
         if len(names) > 1:
-            names[1] = " ".join(list_of_correct_names)
+            names[1] = _create_initials(names[1])
 
-        names_corrected = list()
-        names_corrected.append(" ".join(names))
+        authors[i] = " ".join(names)
 
-        # put Everything back (correcte list of names)
-        authors_corrected.append("".join(names_corrected))
-
-    # put Everything back (correcte list of records)
-    record[1] = "; ".join(authors_corrected)
-
+    record[1] = "; ".join(authors)
     print("|".join(record), end="\n\n")
 
     return True
+
+
+def _isolate_last_name(author_name):
+    '''
+    Isolate last_name from other_names
+    :param name: a list of the full author's citation name that was split either by ' ' or by '
+    :return: A list in the form [ last_name, other_names]
+    '''
+
+    # The author has just one name
+    if len(author_name) == 1:
+        return author_name
+    else:
+        last_names = author_name[0].split(' ')
+
+        # Check if last_name is made up by one name
+        if len(last_names) == 1:
+
+            # if author_name[0] is only a letter switch by author_name[1]
+            if len(author_name[0]) == 1 and len(author_name[1]) > 1:
+                author_name[0], author_name[1] = author_name[1], author_name[0].split(' ')[0]
+
+            return author_name
+
+        # last_name is made up by two or more names
+        else:
+            # check if the last element of last_name list is not just a single letter or an Abbreviation
+            if len(last_names[-1]) == 1 or '.' in last_names[-1]:
+                author_name[0] = last_names.pop(-2)
+                author_name[1] += " " + " ".join(last_names)
+                return author_name
+
+            else:
+                author_name[0] = last_names.pop()
+                author_name[1] += " " + " ".join(last_names)
+                return author_name
+
+
+def _create_initials(author_name):
+    '''
+    Reduce names to Its initials
+    :param author_name: a string with the author names
+    :return: a string with the initials of each name followed by a .
+    '''
+
+    author_name = author_name.strip().replace('.', '. ')
+    names = re.split('\s+', author_name)
+    initials = ' '
+
+    for name in names:
+        if name != '' and name not in ['DO', 'DOS', 'DA', 'DAS', 'DE', 'DES', 'DI', 'DU']:
+            initials += name[0] + '.' + ' '
+
+    return initials
