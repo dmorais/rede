@@ -8,6 +8,7 @@ import time
 def get_publication(list_authors):
     '''
     Fetch Publications from url
+
     :param list_authors: list of tuples (name, id)
     :return: True
     '''
@@ -35,6 +36,7 @@ def get_publication(list_authors):
 def _splitter(author, pub):
     '''
     Split publication record into authors | title | journal
+
     :param author: full author's name string
     :param pub: publication record string
     :return: True
@@ -54,6 +56,7 @@ def _splitter(author, pub):
 def normalize_names(pub):
     '''
     Remove unwanted char from names and standardize the citation
+
     :param pub: string in the format specified by the function splitter
     :return:
     '''
@@ -118,6 +121,7 @@ def normalize_names(pub):
 def _isolate_last_name(author_name):
     '''
     Isolate last_name from other_names
+
     :param name: a list of the full author's citation name that was split either by ' ' or by '
     :return: A list in the form [ last_name, other_names]
     '''
@@ -154,6 +158,7 @@ def _isolate_last_name(author_name):
 def _create_initials(author_name):
     '''
     Reduce names to Its initials
+
     :param author_name: a string with the author names
     :return: a string with the initials of each name followed by a .
     '''
@@ -181,7 +186,9 @@ def _print_problems(author, pub):
 
 def _verify_name_structure(names, pub_full):
     '''
-    Check if names[0] is not in fact a initial. Do a swap to names[-1] if it is >2 or to next largest name
+    Check if names[0] is not in fact a initial.
+    Do a swap to names[-1] if it is names[-1]>2 otherwise print as error
+
     :param names: list with author name split by either space or comma
     :param pub_full: a string containing authors full name|publication record
     :return: a tuple the first element is a Boolean and the second a list where names[0] is the longest names in the authors list.
