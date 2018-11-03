@@ -42,12 +42,8 @@ def _splitter(author, pub):
     record = pub.strip().split(' . ')
 
     if len(record) <= 1:
-        full_name = author.split(' ')
-        with open("-".join(full_name) + "-problems_with_citation.txt", 'a') as f:
-            line = author + '|' + pub
-            f.write(line)
-            f.write("\n\n")
-            return True
+        _print_problems(author, pub)
+        return True
 
     title = record[1].split('.')
     normalize_names(author + "|" + record[0] + "|" + title[0] + "| " + "".join(title[1:]))
@@ -62,6 +58,11 @@ def normalize_names(pub):
     :return:
     '''
 
+    # Some publication contain a new line within. It needs to be removed
+    new_line_regex = re.compile('\n')
+    pub = re.sub(new_line_regex, " ", pub)
+
+    # List of regex to be removed from authors' names
     regexes = (
         r'\s?D[AEIOU]\s+',
         r'-',
@@ -75,7 +76,6 @@ def normalize_names(pub):
         r'\d+'
 
     )
-
     regex = re.compile("|".join(regexes), re.IGNORECASE)
     record = pub.strip().split("|")
 
@@ -94,6 +94,13 @@ def normalize_names(pub):
 
         if len(names) == 1:
             names = author.split(' ')
+
+        # Check if names is not only made up by Initial and names[0] Is not a Inintal
+        initial, names = _verify_name_structure(names[:], pub)
+
+        # If initial is True author name has a problem. Break the processing of this publication
+        if initial:
+            return True
 
         names = _isolate_last_name(names[:])
 
@@ -160,3 +167,38 @@ def _create_initials(author_name):
             initials += name[0] + '.' + ' '
 
     return initials
+
+
+def _print_problems(author, pub):
+    full_name = author.split(' ')
+    with open("_".join(full_name) + "_problems_with_citation.txt", 'a') as f:
+        line = author + '|' + pub
+        f.write(line)
+        f.write("\n\n")
+
+    return True
+
+
+def _verify_name_structure(names, pub_full):
+    '''
+    Check if names[0] is not in fact a initial. Do a swap to names[-1] if it is >2 or to next largest name
+    :param names: list with author name split by either space or comma
+    :param pub_full: a string containing authors full name|publication record
+    :return: a tuple the first element is a Boolean and the second a list where names[0] is the longest names in the authors list.
+    '''
+
+    # Last name is not an Initial return names
+    if len(names[0]) > 1 and "." not in names[0]:
+        return False, names
+
+    else:
+        # If name[-1] is larger than names[0]
+        if (len(names[-1]) > 1 and "." not in names[-1]) and (len(names[-1]) > len(names[0])):
+            last_name = names.pop(-1)
+            names.insert(0, last_name)
+            return False, names
+        else:
+            pub = pub_full.split('|')
+            author = pub.pop(0)
+            _print_problems(author, "|".join(pub))
+            return True, names
