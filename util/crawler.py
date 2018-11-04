@@ -65,7 +65,7 @@ def normalize_names(pub):
     new_line_regex = re.compile('\n')
     pub = re.sub(new_line_regex, " ", pub)
 
-    # List of regex to be removed from authors' names
+    # List of patterns to be removed from authors' names
     regexes = (
         r'\s?D[AEIOU]\s+',
         r'-',
@@ -94,14 +94,13 @@ def normalize_names(pub):
 
         # Sometimes the authorship appears without ',' :(
         # In this case check the len of names and split by space
-
         if len(names) == 1:
             names = author.split(' ')
 
         # Check if names is not only made up by Initial and names[0] Is not a Inintal
         initial, names = _verify_name_structure(names[:], pub)
 
-        # If initial is True author name has a problem. Break the processing of this publication
+        # If initial is True the author's name has a problem. Break the processing of this publication print to problem file
         if initial:
             return True
 
@@ -191,7 +190,7 @@ def _verify_name_structure(names, pub_full):
 
     :param names: list with author name split by either space or comma
     :param pub_full: a string containing authors full name|publication record
-    :return: a tuple the first element is a Boolean and the second a list where names[0] is the longest names in the authors list.
+    :return: a tuple where the first element is a Boolean and the second a list.
     '''
 
     # Last name is not an Initial return names
