@@ -20,15 +20,6 @@ def main():
     titles = get_titles(file_name)
     get_pmid(titles, author, dir_path)
 
-    # # Traverse the pubmed_results and call Fix_prombles to put the citation in the right format
-    # for _, _, file_list in os.walk(dir_path):
-    #     for fname in file_list:
-    #         if '_pubmed.txt' in fname:
-    #             print('Normalizing Pubmed Files')
-    #             call(['python', os.path.join(os.getcwd(), 'Fix_problems_with_citation.py'), os.path.join(dir_path, fname)])
-
-
-
 
 if __name__ == '__main__':
     main()
