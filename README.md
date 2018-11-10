@@ -66,3 +66,16 @@ python Alternative_citation.py <File created by Scapper.py>
 
 
 ```
+
+* Pubmed_citation.py - This script fetches PubMed records based on their title and parsed it.
+
+```
+python  Pubmed_citation.py file_name "author_name"
+
+# File_name contains a list of article titles retrieved from the citations_with_problems file
+# Autor_name is the full author_name as a string (surrounded by double quotes)
+
+# Notes: The script updated the record in scrapper_citation/autor_name.txt and creates a 
+pubmed_problems/autor_pubmed_error.txt
+
+```

@@ -3,12 +3,14 @@ from bs4 import BeautifulSoup
 import re
 import sys
 import time
+import os
+from util.util import ensure_dir
 
 
-def get_publication(list_authors):
+def get_publication(list_authors, dir_path):
     '''
     Fetch Publications from url
-
+    :param dir_path: A path to a directory where scrapper will output the citations
     :param list_authors: list of tuples (name, id)
     :return: True
     '''
@@ -27,7 +29,11 @@ def get_publication(list_authors):
                     unwanted_ano = div_layout5.find('span', {'data-tipo-ordenacao': 'ano'})
                     unwanted_ano.extract()
 
-                    _splitter(record[0], div_layout5.getText(separator=u' ').strip())
+
+                    pub = _splitter(record[0], div_layout5.getText(separator=u' ').strip())
+
+                    if isinstance(pub, str):
+                        normalize_names(pub,dir_path)
 
         time.sleep(30)
     return True
@@ -39,7 +45,7 @@ def _splitter(author, pub):
 
     :param author: full author's name string
     :param pub: publication record string
-    :return: True
+    :return: a string with author and publication records
     '''
     record = pub.strip().split(' . ')
 
@@ -48,17 +54,18 @@ def _splitter(author, pub):
         return True
 
     title = record[1].split('.')
-    normalize_names(author + "|" + record[0] + "|" + title[0] + "| " + "".join(title[1:]))
+    pub = author + "|" + record[0] + "|" + title[0] + "| " + "".join(title[1:])
+    return pub
 
-    return True
 
 
-def normalize_names(pub):
+def normalize_names(pub,dir_path):
     '''
     Remove unwanted char from names and standardize the citation
 
     :param pub: string in the format specified by the function splitter
-    :return:
+    :param dir_path: A path to a directory where scrapper will output the citation
+    :return: True
     '''
 
     # Some publication contain a new line within. It needs to be removed
@@ -76,9 +83,11 @@ def normalize_names(pub):
         r'\s+DI$'
         r'\s+DO$',
         r'\s+E\s+',
+        r'JR',
         r'\d+'
 
     )
+
     regex = re.compile("|".join(regexes), re.IGNORECASE)
     record = pub.strip().split("|")
 
@@ -112,7 +121,13 @@ def normalize_names(pub):
         authors[i] = " ".join(names)
 
     record[1] = "; ".join(authors)
-    print("|".join(record), end="\n\n")
+    citation = "|".join(record)
+
+
+    full_name = record[0].split(' ')
+    with open( os.path.join(dir_path,"_".join(full_name) + "_citations.txt"), 'a') as f:
+        f.write(citation)
+        f.write("\n\n")
 
     return True
 
@@ -174,8 +189,12 @@ def _create_initials(author_name):
 
 
 def _print_problems(author, pub):
+
+    dir_path = os.path.join(os.getcwd(),"citations_with_problems")
+    ensure_dir(dir_path)
+
     full_name = author.split(' ')
-    with open("_".join(full_name) + "_problems_with_citation.txt", 'a') as f:
+    with open( os.path.join(dir_path,"_".join(full_name) + "_citations.txt"), 'a') as f:
         line = author + '|' + pub
         f.write(line)
         f.write("\n\n")
