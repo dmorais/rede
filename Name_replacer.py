@@ -27,11 +27,16 @@ def replace_occurrences(dict_of_names, file_name):
 
 def main():
 
-    file_of_names = sys.argv[1]
-    reference_file_names = sys.argv[2]
+    if (len(sys.argv) != 3) or sys.argv[1] == "-h":
+        print('Usage\npython ' + sys.argv[0] + "<alternative_file_of_names> <publication_file_names>\n\n ")
+        sys.exit()
 
-    dict_of_names = get_dict_of_names(file_of_names)
-    replace_occurrences(dict_of_names,reference_file_names)
+
+    alternative_file_of_names = sys.argv[1]
+    publication_file_names = sys.argv[2]
+
+    dict_of_names = get_dict_of_names(alternative_file_of_names)
+    replace_occurrences(dict_of_names, publication_file_names)
 
 
 
