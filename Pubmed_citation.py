@@ -2,7 +2,6 @@ from util.pubmedcrawler import get_pmid
 from util.util import get_titles, ensure_dir
 import sys
 import os
-from subprocess import call
 
 
 def main():

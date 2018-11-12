@@ -67,7 +67,7 @@ python Alternative_citation.py <File created by Scapper.py>
 
 ```
 
-* Pubmed_citation.py - This script fetches PubMed records based on their title and parsed it.
+* Pubmed_citation.py - This script fetches PubMed records based on their title and parses them.
 
 ```
 python  Pubmed_citation.py file_name "author_name"

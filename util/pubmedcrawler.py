@@ -76,7 +76,6 @@ def get_pmid(references, author, dir_path):
             citaton = author + "|" + coauthors + "|" + title + "|" + journal
             normalize_names(citaton, os.path.join(os.getcwd(), "scrapper_citations"))
 
-
     file_prob.close()
 
     return True
