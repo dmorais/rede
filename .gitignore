@@ -114,3 +114,5 @@ author.*
 .idea/*
 runs/*
 scrapper_citations/*
+Scholar_citations.py
+util/scholarcrawler.py

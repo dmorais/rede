@@ -22,4 +22,30 @@ def ensure_dir(dir_path):
         print("Creating", dir_path)
         os.makedirs(dir_path)
 
+    else:
+        print(dir_path + " already exists")
+
     return True
+
+
+def get_dirs(base_dir):
+
+    nbib_dir_list = list()
+    for _, sub_dir_list, _ in os.walk(base_dir):
+        for sub_dir in sub_dir_list:
+            nbib_dir_list.append(sub_dir)
+
+    return nbib_dir_list
+
+def get_files_names(base_dir, prob=False):
+
+    file_names = list()
+    for _, _, file_list in os.walk(base_dir):
+        for names in file_list:
+            if prob:
+                names = names.replace("_pubmed_error.txt",'')
+            file_names.append(names)
+
+
+    return file_names
+
