@@ -9,19 +9,15 @@ import argparse
 
 def main():
     parser = argparse.ArgumentParser(
-        description="A tool to Extract information from Lattes platform")
+        description="A tool to Parse ewn file (endnote format) and update scrapper.py output")
 
     parser.add_argument('-c', '--create', action="store_true",
-                        help='A csv file containing a list of Lattes names and/or Lattes id',
+                        help='A the file directory structure where the ewn files should be put.  This option should be ran'
+                             'only once, unless new researchers are added to the pubmed_problem dir.',
                         required=False)
 
     parser.add_argument('-p', '--parse', action='store_true',
-                        help="Given a list of Lattes id extract the list of publications of an CV",
-                        required=False)
-
-    parser.add_argument('-d', '--dir', action='store_true',
-                        default=os.getcwd(),
-                        help="A path to the output of scrapper. If none provide use current working dir ",
+                        help="Parse all files in the nbib/author dir and update scrapper output.",
                         required=False)
 
     args = parser.parse_args()

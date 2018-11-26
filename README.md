@@ -6,7 +6,7 @@ network of co-authorship.
 
 # Requirements
 ```
-python3.6 or above
+python 3.6.2 or above
 
 ```
 
@@ -77,5 +77,42 @@ python  Pubmed_citation.py file_name "author_name"
 
 # Notes: The script updated the record in scrapper_citation/autor_name.txt and creates a 
 pubmed_problems/autor_pubmed_error.txt
+
+```
+
+* Nbib_citations.py - This script is used to parse the ewn (endnote output)
+```
+usage: Nbib_citation.py [-h] [-c] [-p]
+
+A tool to Parse ewn file (endnote format) and update scrapper.py output
+
+optional arguments:
+  -h, --help    show this help message and exit
+  -c, --create  A the file directory structure where the ewn files should be
+                put. This option should be ranonly once, unless new
+                researchers are added to the pubmed_problem dir.
+  -p, --parse   Parse all files in the nbib/author dir and update scrapper
+                output.
+
+```
+
+How to run
+```
+# Create dir struture.
+
+# In this mode the script looks inside the dir pubmed_problems and checks which authors still have 
+missing citation. It then creates the nbib/author_name . 
+
+# NOTE: You must put the ewn files there.
+
+python Nbib_citation.py -c
+
+
+# Parse the ewn file. In this mode the script traverse the nbib directory tree and for each author 
+it parses the ewn file. 
+
+#The scrapper output file is updated for each publication parsed. 
+
+python Nbib_citation.py -p
 
 ```
